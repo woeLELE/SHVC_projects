@@ -3,7 +3,7 @@
 
 因为编码器本身的工程文件非常大，所以这里我还是说一下我的代码的实现位置
 
-GMM类是我自己实现的，用来根据当前CU的ILR模式的RDCost以及相邻CU的最优RDCost进行GMM变换判断当前CU更可能属于ILR模式还是帧内模式
+GMM类是本人实现的，用来根据当前CU的ILR模式的RDCost以及相邻CU的最优RDCost进行GMM变换判断当前CU更可能属于ILR模式还是帧内模式
 
 TEncCu类是编码器原本就存在的类，我做的工作主要从第873开始，并且在xCheckRDCostILRUni方法中做了修改，调用hytest方法以得到split的结果，hytest方法是我在该类中添加的方法，用来计算残差图像的显著性差异。
 
