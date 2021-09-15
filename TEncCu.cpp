@@ -43,8 +43,8 @@
 using namespace std;
 double RD_direct_ILR, RD_direct_merge, a = 0, b = 0, c = 0, m = 0;
 const double limset = 0.9;
-int m0 = 0; // Ò»ĞĞÖĞCTUµÄ¸öÊı£¬¼´ÒÔCTUÎªµ¥Î»ÓĞ¶àÉÙÁĞ
-int n0 = 0; // Ò»ÁĞÖĞCTUµÄ¸öÊı£¬¼´ÒÔCTUÎªµ¥Î»ÓĞ¶àÉÙĞĞ
+int m0 = 0; // ä¸€è¡Œä¸­CTUçš„ä¸ªæ•°ï¼Œå³ä»¥CTUä¸ºå•ä½æœ‰å¤šå°‘åˆ—
+int n0 = 0; // ä¸€åˆ—ä¸­CTUçš„ä¸ªæ•°ï¼Œå³ä»¥CTUä¸ºå•ä½æœ‰å¤šå°‘è¡Œ
 int ctuIndex = 0;
 int fr = 0;
 int px = 0, py = 0;
@@ -57,14 +57,14 @@ bool inited = false;
 
 typedef pair<int, double> p;
 typedef pair<int, int> pp;
-vector<vector<p>> curCosts0;
-vector<vector<p>> curCosts1;
-vector<vector<p>> curCosts2;
-vector<vector<p>> curCosts3;
-vector<vector<p>> preCosts0;
-vector<vector<p>> preCosts1;
-vector<vector<p>> preCosts2;
-vector<vector<p>> preCosts3;
+vector<vector<p>> curCosts0;   // ç»Ÿè®¡å½“å‰å¸§æ·±åº¦0CUçš„cost
+vector<vector<p>> curCosts1;   // å½“å‰å¸§æ·±åº¦1
+vector<vector<p>> curCosts2;   // å½“å‰å¸§æ·±åº¦2
+vector<vector<p>> curCosts3;   // å½“å‰å¸§æ·±åº¦3
+vector<vector<p>> preCosts0;   // ç»Ÿè®¡å‰ä¸€å¸§æ·±åº¦0CUçš„cost
+vector<vector<p>> preCosts1;   // å‰ä¸€å¸§æ·±åº¦1
+vector<vector<p>> preCosts2;   // å‰ä¸€å¸§æ·±åº¦2
+vector<vector<p>> preCosts3;   // å‰ä¸€å¸§æ·±åº¦3
 
 vector<pp> prePos({ pp(0, -1), pp(0, 0), pp(-1, -1), pp(-1, 0), pp(-1, +1) });
 vector<pp> curPos({ pp(0, -1), pp(-1, -1), pp(-1, 0), pp(-1, 1) });
@@ -886,7 +886,7 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, const U
                         }
                         else
                         {
-                            // ÔÚÕâÀï½øĞĞ¸ÅÂÊ¼ÆËã
+                            // åœ¨è¿™é‡Œè¿›è¡Œæ¦‚ç‡è®¡ç®—
                             ILRCost = rpcBestCU->getTotalCost();
                             double res = 0.499;
                             if (uiDepth == 1)
@@ -1125,8 +1125,8 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, const U
                                 }
                             }
 
-                            // ½øĞĞÖ¡ÄÚ±àÂë
-                            if (res <= limset)   //ĞŞ¸ÄÎ»ÖÃ
+                            // è¿›è¡Œå¸§å†…ç¼–ç 
+                            if (res <= limset)   //ä¿®æ”¹ä½ç½®
                             {
                                 //Double intraCost = 0.0;
 
@@ -1162,9 +1162,9 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, const U
                         //if ((uiDepth == 1 || uiDepth == 2) && px > 0 && px < n0 - 1 && py > 0 && py < m0 - 1)
                         //    cease = hytest(rpcBestCU, m_ppcOrigYuv[uiDepth], m_ppcPredYuvBest[uiDepth], uiDepth, 2);
 
-                        // Éú³ÉÏàÁÚCUµÄcostÍ¼
+                        // ç”Ÿæˆç›¸é‚»CUçš„costå›¾
                         double cost = rpcBestCU->getTotalCost();
-                        if (cost > 0)   // È·±£costÓĞĞ§
+                        if (cost > 0)   // ç¡®ä¿costæœ‰æ•ˆ
                         {
                             bool is_Intra;
                             if (rpcBestCU->getPredictionMode(0) == 0) // ILR
@@ -1173,9 +1173,9 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, const U
                                 is_Intra = true;
 
                             //if (is_Intra)
-                            //    tout << fr << " -- " << uiDepth << " ÊÇÖ¡ÄÚÄ£Ê½" << endl;
+                            //    tout << fr << " -- " << uiDepth << " æ˜¯å¸§å†…æ¨¡å¼" << endl;
                             //else
-                            //    tout << fr << " -- " << uiDepth << " ÊÇILRÄ£Ê½" << endl;
+                            //    tout << fr << " -- " << uiDepth << " æ˜¯ILRæ¨¡å¼" << endl;
                             if (uiDepth == 0)
                             {
                                 curCosts0[px][py].first = (int)is_Intra;
@@ -2354,7 +2354,7 @@ Void TEncCu::xCheckRDCostILRUni(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, 
     {
         return;
     }
-    // ½øĞĞÅĞ¶Ï
+    // è¿›è¡Œåˆ¤æ–­
     int depth = (int)uhDepth;
     if ((depth == 1 || depth == 2) && hytest(rpcBestCU, m_ppcOrigYuv[depth], m_ppcPredYuvBest[depth], depth, 1))
     {
